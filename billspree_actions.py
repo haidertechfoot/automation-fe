@@ -1,7 +1,9 @@
 import subprocess
+from tkinter.tix import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 import time
 
 def perform_billspree_actions(driver):
@@ -66,16 +68,15 @@ def perform_billspree_actions(driver):
     last_page_button.click()
     print("Clicked on the pagination button to go to the last page")
     time.sleep(3)
-
-        # Wait for the last package's caret button and click it
-    WebDriverWait(driver, 10).until(
-        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.my-caret-button'))
-    )
-    package_actions_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.my-caret-button')
-    last_package_action_button = package_actions_buttons[-1]
-    last_package_action_button.click()
-    print("Opened actions menu for the last package")
-    time.sleep(3)
+    # # Wait for the last package's caret button and click it
+    # WebDriverWait(driver, 10).until(
+    #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.my-caret-button'))
+    # )
+    # package_actions_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.my-caret-button')
+    # last_package_action_button = package_actions_buttons[-1]
+    # last_package_action_button.click()
+    # print("Opened actions menu for the last package")
+    # time.sleep(3)
 
     # Wait for the "Plans" option and click it
     WebDriverWait(driver, 10).until(
@@ -167,6 +168,62 @@ def perform_billspree_actions(driver):
     schedule_process_button.click()
     print("Clicked on 'Schedule Process' button")
     time.sleep(3)
+
+    # Wait until the "Close" button is present and clickable, then click it
+    close_button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#modal-btn'))
+    )
+    close_button.click()
+    print("Clicked on the Close button")
+    time.sleep(3)
+
+    # Click on the "Billing Operations" menu item
+    try:
+        WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, '//span[text()="Billing Operations"]')))
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Billing Operations"]')))
+        billing_operations_item = driver.find_element(By.XPATH, '//span[text()="Billing Operations"]')
+        billing_operations_item.click()
+        print("Navigated to Billing Operations")
+    except Exception as e:
+        print(f"Error navigating to Billing Operations: {e}")
+    time.sleep(3)
+
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[id="newButton"]')))
+    newButton = driver.find_element(By.CSS_SELECTOR, 'button[id="newButton"]')
+    newButton.click()
+    print("Navigated to Packages & Plans")
+    time.sleep(1)
+
+     # Wait for the dropdown to be present
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'select.form-control.contentB')))
+    
+    # Locate the dropdown element
+    dropdown = driver.find_element(By.CSS_SELECTOR, 'select.form-control.contentB')
+    
+    # Initialize the Select object with the dropdown element
+    select = Select(dropdown)
+    
+    # Select the last option
+    select.select_by_index(len(select.options) - 1)
+    
+    # Print the selected option
+    print(f"Selected option: {select.options[-1].text}")
+    time.sleep(3)  # Wait for 3 seconds to observe the action
+
+    try:
+        # Wait for the "Start Process" button to be present and clickable
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, 'startProcess')))
+        
+        # Locate the "Start Process" button
+        start_process_button = driver.find_element(By.ID, 'startProcess')
+        
+        # Click the "Start Process" button
+        start_process_button.click()
+        
+        print("Clicked on 'Start Process' button")
+        time.sleep(3)  # Wait for 3 seconds to observe the action
+    except Exception as e:
+        print(f"Error clicking on 'Start Process' button: {e}")
 
     # Wait until the "Close" button is present and clickable, then click it
     close_button = WebDriverWait(driver, 10).until(

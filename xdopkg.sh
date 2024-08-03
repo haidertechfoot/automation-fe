@@ -7,14 +7,14 @@ sleep 2
 xdotool search --name "Open" windowactivate
 
 # Navigate to the Downloads folder
-xdotool type --delay 100 "/home/adeel/Downloads/"
+xdotool type --delay 50 "/home/adeel/Downloads/"
 xdotool key Return
 
 # Wait for the folder to load
 sleep 3
 
 # Select the Service.json file
-xdotool type --delay 100 "zyppkg.json"
+xdotool type --delay 50 "zyppkg.json"
 xdotool key Return
 
 # Wait for the dialog to refresh (if needed)
