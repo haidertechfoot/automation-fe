@@ -14,7 +14,7 @@ xdotool key Return
 sleep 3
 
 # Select the Service.json file
-xdotool type --delay 100 "zyppkg.json"
+xdotool type --delay 50 "zypconnections.csv"
 xdotool key Return
 
 # Wait for the dialog to refresh (if needed)

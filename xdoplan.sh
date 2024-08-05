@@ -14,7 +14,7 @@ xdotool key Return
 sleep 3
 
 # Select the Service.json file
-xdotool type --delay 50 "zypplan.json"
+xdotool type --delay 100 "zypplan.json"
 xdotool key Return
 
 # Wait for the dialog to refresh (if needed)
