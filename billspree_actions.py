@@ -68,15 +68,15 @@ def perform_billspree_actions(driver):
     last_page_button.click()
     print("Clicked on the pagination button to go to the last page")
     time.sleep(3)
-    # # Wait for the last package's caret button and click it
-    # WebDriverWait(driver, 10).until(
-    #     EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.my-caret-button'))
-    # )
-    # package_actions_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.my-caret-button')
-    # last_package_action_button = package_actions_buttons[-1]
-    # last_package_action_button.click()
-    # print("Opened actions menu for the last package")
-    # time.sleep(3)
+    # Wait for the last package's caret button and click it
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'button.my-caret-button'))
+    )
+    package_actions_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.my-caret-button')
+    last_package_action_button = package_actions_buttons[-1]
+    last_package_action_button.click()
+    print("Opened actions menu for the last package")
+    time.sleep(3)
 
     # Wait for the "Plans" option and click it
     WebDriverWait(driver, 10).until(

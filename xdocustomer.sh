@@ -18,7 +18,7 @@ xdotool type --delay 100 "10 Customers.csv"
 xdotool key Return
 
 # Wait for the dialog to refresh (if needed)
-sleep 1
+sleep 5
 
 # Press Enter to open the file
 xdotool key Return

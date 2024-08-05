@@ -23,11 +23,11 @@ def navigate_to_rollspree(driver):
     dashboard_menu_item = driver.find_element(By.XPATH, '//span[text()="Dashboard"]')
     dashboard_menu_item.click()
     print("Navigated to Dashboard")
-    time.sleep(10)
+    time.sleep(15)
 
     # Click on the "Rollspree" menu item
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Rollspree"]')))
     rollspree_menu_item = driver.find_element(By.XPATH, '//span[text()="Rollspree"]')
     rollspree_menu_item.click()
     print("Navigated to Rollspree")
-    time.sleep(3)
+    time.sleep(4)

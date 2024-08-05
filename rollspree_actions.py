@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 import time
 
 def perform_rollspree_actions(driver):
@@ -36,12 +37,16 @@ def perform_rollspree_actions(driver):
                 WebDriverWait(driver, 10).until(EC.element_to_be_clickable(tab))
                 tab.click()
                 print(f"Clicked on the {tab_name} tab in Rollspree")
-                time.sleep(3)  # Allow time for the UI to update
+                time.sleep(5)  # Allow time for the UI to update
                 break
 
     # Click on the "View" button in the Plans section
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.table-content-item > button.btn')))
-    view_button = driver.find_element(By.CSS_SELECTOR, 'div.table-content-item > button.btn')
-    view_button.click()
-    print("Clicked on the View button in the Plans section of Rollspree")
-    time.sleep(10)
+    try:
+        view_button = WebDriverWait(driver, 20).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.table-content-item > button.btn'))
+        )
+        view_button.click()
+        print("Clicked on the View button in the Plans section of Rollspree")
+        time.sleep(10)
+    except TimeoutException:
+        print("View button was not found or not clickable.")
