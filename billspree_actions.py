@@ -247,9 +247,6 @@ def perform_billspree_actions(driver):
 
     time.sleep(2)
 
-    
-     
-
     # Click on the "Billing Operations" menu item
     try:
         WebDriverWait(driver, 15).until(EC.presence_of_element_located((By.XPATH, '//span[text()="Billing Operations"]')))
