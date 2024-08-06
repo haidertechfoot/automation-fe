@@ -3,7 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 def login(driver):
-    driver.get("https://demo.spreesuite.com")
+    driver.get("https://automation.billspree.work")
     
     # Wait for the login form to load
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[id="email"]')))
@@ -15,8 +15,8 @@ def login(driver):
     login_button = driver.find_element(By.CSS_SELECTOR, 'div#signIn')
 
     # Enter your login credentials
-    email_field.send_keys('')
-    password_field.send_keys('')
+    email_field.send_keys('automation@gmail.com')
+    password_field.send_keys('abc123')
 
     # Click the login button
     login_button.click()

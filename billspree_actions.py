@@ -4,7 +4,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
+from selenium import webdriver
 import time
+
+from notification_handler import check_notifications
 
 def perform_billspree_actions(driver):
     # Click on the "Packages & Plans" section
@@ -13,44 +16,60 @@ def perform_billspree_actions(driver):
     packages_and_plans.click()
     print("Navigated to Packages & Plans")
     time.sleep(3)
-
-    # Click on the "Contacts" section
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//span[contains(@class, "l1") and text()="Contacts"]'))
-    )
-    contacts_section = driver.find_element(By.XPATH, '//span[contains(@class, "l1") and text()="Contacts"]')
-    contacts_section.click()
-    print("Clicked on 'Contacts'")
-    time.sleep(3)
-
-    # Click on the "Customers" section
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//span[contains(@class, "l2") and text()="Customers"]'))
-    )
-    customers_section = driver.find_element(By.XPATH, '//span[contains(@class, "l2") and text()="Customers"]')
-    customers_section.click()
-    print("Clicked on 'Customers'")
-    time.sleep(3)
     
-    # Click on the "Import Bulk Data" button
-    WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#import-bulk-data'))
-    )
-    import_bulk_data_button = driver.find_element(By.CSS_SELECTOR, 'button#import-bulk-data')
-    import_bulk_data_button.click()
-    print("Clicked on 'Import Bulk Data' button")
+    try:
+        # Click on the "Contacts" section
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(@class, "l1") and text()="Contacts"]'))
+        )
+        contacts_section = driver.find_element(By.XPATH, '//span[contains(@class, "l1") and text()="Contacts"]')
+        contacts_section.click()
+        print("Clicked on 'Contacts'")
+    except Exception as e:
+        print(f"Error clicking on 'Contacts': {e}")
     time.sleep(3)
 
-    # Execute the script to handle the file selection dialog
-    subprocess.run('/home/adeel/Documents/selenium/selenium/automation-fe/xdocustomer.sh', shell=True)
+    try:
+        # Click on the "Customers" section
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//span[contains(@class, "l2") and text()="Customers"]'))
+        )
+        customers_section = driver.find_element(By.XPATH, '//span[contains(@class, "l2") and text()="Customers"]')
+        customers_section.click()
+        print("Clicked on 'Customers'")
+    except Exception as e:
+        print(f"Error clicking on 'Customers': {e}")
     time.sleep(3)
 
-    # Wait until the "Schedule Process" button is present and clickable, then click it
-    schedule_process_button = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.scheduleBtn'))
-    )
-    schedule_process_button.click()
-    print("Clicked on 'Schedule Process' button")
+    try:
+        # Click on the "Import Bulk Data" button
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#import-bulk-data'))
+        )
+        import_bulk_data_button = driver.find_element(By.CSS_SELECTOR, 'button#import-bulk-data')
+        import_bulk_data_button.click()
+        print("Clicked on 'Import Bulk Data' button")
+    except Exception as e:
+        print(f"Error clicking 'Import Bulk Data' button: {e}")
+    time.sleep(3)
+
+    try:
+        # Execute the script to handle the file selection dialog
+        subprocess.run('/home/adeel/Documents/selenium/selenium/automation-fe/xdocustomer.sh', shell=True)
+        time.sleep(3)
+        print("Executed file selection script.")
+    except Exception as e:
+        print(f"Error executing file selection script: {e}")
+
+    try:
+        # Wait until the "Schedule Process" button is present and clickable, then click it
+        schedule_process_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.scheduleBtn'))
+        )
+        schedule_process_button.click()
+        print("Clicked on 'Schedule Process' button")
+    except Exception as e:
+        print(f"Error clicking 'Schedule Process' button: {e}")
     time.sleep(3)
 
     # Wait until the "Close" button is present and clickable, then click it
@@ -61,6 +80,23 @@ def perform_billspree_actions(driver):
     print("Clicked on the Close button")
     time.sleep(3)
 
+    # Check notifications after scheduling the process
+    status = None
+    while status is None:
+        status = check_notifications(driver)
+        time.sleep(10)  # Wait and check again if no status is found
+
+    if status:
+        print("Customer upload process completed successfully.")
+    else:
+        print("Customer upload process failed. Terminating further actions.")
+
+    # Click on the "Packages & Plans" section
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Packages & Plans"]')))
+    packages_and_plans = driver.find_element(By.XPATH, '//span[text()="Packages & Plans"]')
+    packages_and_plans.click()
+    print("Navigated to Packages & Plans")
+    time.sleep(3)
 
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'button[id="newButton"]')))
     newButton = driver.find_element(By.CSS_SELECTOR, 'button[id="newButton"]')
@@ -457,6 +493,41 @@ def perform_billspree_actions(driver):
         print("Clicked on 'View/Update' action for Billspree.")
     else:
         print("Unable to find the 'View/Update' action for Billspree.")
+    time.sleep(3)
+
+    # Click on the "Test" button in the Plans section
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button#test-button.my-button')))
+    test_button = driver.find_element(By.CSS_SELECTOR, 'button#test-button.my-button')
+    test_button.click()
+    print("Clicked on the Test button in the Plans section")
+    time.sleep(7)
+
+    # Click on the "Usage Inputs" tab
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//span[contains(text(), "Usage Inputs")]')))
+    usage_inputs_tab = driver.find_element(By.XPATH, '//span[contains(text(), "Usage Inputs")]')
+    usage_inputs_tab.click()
+    print("Clicked on the Usage Inputs tab")
+    time.sleep(3)
+
+    # Enter value 500 in the input field
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="number"].form-control')))
+    input_field = driver.find_element(By.CSS_SELECTOR, 'input[type="number"].form-control')
+    input_field.send_keys('500')
+    print("Entered value 500 in the input field")
+    time.sleep(2)
+
+    # Click on the "Process" button
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.prs-btn')))
+    process_button = driver.find_element(By.CSS_SELECTOR, 'button.prs-btn')
+    process_button.click()
+    print("Clicked on the Process button")
+    time.sleep(5)
+
+    # Click on the "Close" button
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cls-btn')))
+    close_button = driver.find_element(By.CSS_SELECTOR, 'button.cls-btn')
+    close_button.click()
+    print("Clicked on the Close button")
     time.sleep(3)
 
     # List of tab names to click on
