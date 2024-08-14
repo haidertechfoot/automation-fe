@@ -7,7 +7,7 @@ from notification_handler import check_notifications
 import time
 
 # Initialize the WebDriver (assuming Chrome)
-driver = webdriver.Chrome()
+driver = webdriver.Firefox()
 
 try:
     # Login

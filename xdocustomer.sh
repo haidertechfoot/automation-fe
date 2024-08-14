@@ -7,7 +7,7 @@ sleep 2
 xdotool search --name "Open" windowactivate
 
 # Navigate to the Downloads folder
-xdotool type --delay 100 "/home/adeel/Downloads/"
+xdotool type --delay 100 "/Users/user/Documents/SpreeSuite/Latest Data Spree/Latest Data/zyp scenario"
 xdotool key Return
 
 # Wait for the folder to load
